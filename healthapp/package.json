@@ -1,10 +1,12 @@
 {
+  "type": "module",
   "name": "healthapp",
   "version": "1.0.0",
   "description": "exercise for typescript curse",
   "main": "none",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tsc": "tsc --noEmit",
+    "calculateBmi": "tsc && node --no-warnings --loader ts-node/esm bmiCalculator.ts "
   },
   "keywords": [
     "typescript"
