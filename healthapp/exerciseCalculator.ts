@@ -54,7 +54,7 @@ const calculateExercises = (
   return {
     periodLength: periodLength,
     trainingDays: trainingDays,
-    success: false,
+    success: success,
     rating: rating.ratingValue,
     ratingDescription: rating.ratingDescription,
     target: targetValue,
