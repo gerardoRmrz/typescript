@@ -6,7 +6,8 @@
   "main": "none",
   "scripts": {
     "tsc": "tsc --noEmit",
-    "calculateBmi": "tsc && node --no-warnings --loader ts-node/esm bmiCalculator.ts "
+    "calculateBmi": "tsc && node --no-warnings --loader ts-node/esm bmiCalculator.ts ",
+    "calculateExercises": "tsc && node --no-warnings --loader ts-node/esm exerciseCalculator.ts "
   },
   "keywords": [
     "typescript"
