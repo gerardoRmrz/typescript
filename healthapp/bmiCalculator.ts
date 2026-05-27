@@ -52,7 +52,7 @@ const bmiCalculator = (height: number, weight: number): string => {
   return "Values out of range";
 };
 
-export const bmiApp = (height: string, weight: string): string | unknown => {
+export const bmiApp = (height: string, weight: string): unknown => {
   try {
     const { value1, value2 } = parseArguments(["", "", height, weight]);
     return bmiCalculator(value1, value2);
