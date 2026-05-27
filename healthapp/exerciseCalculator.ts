@@ -13,6 +13,11 @@ interface Rating {
   ratingDescription: string;
 }
 
+interface InputVals {
+  value: number;
+  arrValues: number[];
+}
+
 const calculateRating = (average: number, target: number): Rating => {
   const difference = average - target;
   let ratingValue = 0;
@@ -57,8 +62,24 @@ const calculateExercises = (
   };
 };
 
+const parseArgs = (args: string[]): InputVals => {
+  const arrVals = args.slice(2).map((val) => Number(val));
+
+  if (arrVals.some((val) => isNaN(val))) {
+    throw new Error(`The arguments must be numeric: ${arrVals}`);
+  }
+  if (arrVals.some((val) => val < 0)) {
+    throw new Error(`The arguments must be positive: ${arrVals}`);
+  }
+  return {
+    value: Number(arrVals[0]),
+    arrValues: arrVals.slice(1),
+  };
+};
+
 try {
-  console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+  const args = parseArgs(process.argv);
+  console.log(calculateExercises(args.arrValues, args.value));
 } catch (error) {
   console.log("Something goes wrong: ", error);
 }
