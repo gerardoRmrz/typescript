@@ -4,9 +4,15 @@ interface InputValues {
 }
 
 const parseArguments = (args: string[]): InputValues => {
-  if (args.length < 4) throw new Error("Not enough arguments");
+  if (
+    !args
+      .slice(2)
+      .map((item) => !!item)
+      .every((item) => item)
+  )
+    throw new Error("Not enough arguments");
   if (args.length > 4) throw new Error("Too many arguments");
-
+  console.log();
   if (Number(args[2]) === 0)
     throw new Error("Height must be greater than zero");
 
@@ -46,13 +52,11 @@ const bmiCalculator = (height: number, weight: number): string => {
   return "Values out of range";
 };
 
-try {
-  const { value1, value2 } = parseArguments(process.argv);
-  console.log(bmiCalculator(value1, value2));
-} catch (error: unknown) {
-  let errorMessage = "Something bad happened.";
-  if (error instanceof Error) {
-    errorMessage += "Error: " + error.message;
+export const bmiApp = (height: string, weight: string): string | unknown => {
+  try {
+    const { value1, value2 } = parseArguments(["", "", height, weight]);
+    return bmiCalculator(value1, value2);
+  } catch (error: unknown) {
+    return error;
   }
-  console.log(errorMessage);
-}
+};
