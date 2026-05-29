@@ -1,4 +1,4 @@
-interface Result {
+export interface Result {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -13,10 +13,10 @@ interface Rating {
   ratingDescription: string;
 }
 
-interface InputVals {
+/* interface InputVals {
   value: number;
   arrValues: number[];
-}
+} */
 
 const calculateRating = (average: number, target: number): Rating => {
   const difference = average - target;
@@ -40,14 +40,14 @@ const calculateRating = (average: number, target: number): Rating => {
 };
 
 const calculateExercises = (
-  dailyExercisesHours: number[],
+  daily_exercises: number[],
   targetValue: number,
 ): Result => {
-  const periodLength = dailyExercisesHours.length;
-  const trainingDays = dailyExercisesHours.filter((day) => day > 0).length;
+  const periodLength = daily_exercises.length;
+  const trainingDays = daily_exercises.filter((day) => day > 0).length;
   const success = trainingDays >= targetValue;
   const average =
-    dailyExercisesHours.reduce((acc, curr) => acc + curr, 0) / periodLength;
+    daily_exercises.reduce((acc, curr) => acc + curr, 0) / periodLength;
 
   const rating = calculateRating(average, targetValue);
 
@@ -62,9 +62,9 @@ const calculateExercises = (
   };
 };
 
-const parseArgs = (args: string[]): InputVals => {
+/* const parseArgs = (args: string[]): InputVals => {
   const arrVals = args.slice(2).map((val) => Number(val));
-
+  console.log(arrVals);
   if (arrVals.some((val) => isNaN(val))) {
     throw new Error(`The arguments must be numeric: ${arrVals}`);
   }
@@ -76,10 +76,30 @@ const parseArgs = (args: string[]): InputVals => {
     arrValues: arrVals.slice(1),
   };
 };
+ */
 
-try {
-  const args = parseArgs(process.argv);
-  console.log(calculateExercises(args.arrValues, args.value));
-} catch (error) {
-  console.log("Something goes wrong: ", error);
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const checkArgs = (dailyHours: any, target: any) => {
+  if (typeof target !== "number") {
+    throw new Error("malformatted parameters");
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  if (dailyHours.some((item: any) => typeof item !== "number")) {
+    throw new Error("malformatted parameters");
+  }
+};
+
+export const exercisesApp = (dailyHours: number[], target: number): unknown => {
+  try {
+    if (!(dailyHours && target)) {
+      console.log("**********************");
+      throw new Error("parameters missing");
+    }
+
+    checkArgs(dailyHours, target);
+    return calculateExercises(dailyHours, target);
+  } catch (error: unknown) {
+    console.log("Something goes wrong: ", error);
+    return error;
+  }
+};

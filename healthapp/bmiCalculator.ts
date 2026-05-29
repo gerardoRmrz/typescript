@@ -54,8 +54,15 @@ const bmiCalculator = (height: number, weight: number): string => {
 
 export const bmiApp = (height: string, weight: string): unknown => {
   try {
+    if (!(height && weight)) {
+      throw new Error("Not enough arguments");
+    }
     const { value1, value2 } = parseArguments(["", "", height, weight]);
-    return bmiCalculator(value1, value2);
+    return {
+      weight: value2,
+      height: value1,
+      bmi: bmiCalculator(value1, value2),
+    };
   } catch (error: unknown) {
     return error;
   }
