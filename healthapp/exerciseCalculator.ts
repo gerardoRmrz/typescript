@@ -20,6 +20,7 @@ interface Rating {
 
 const calculateRating = (average: number, target: number): Rating => {
   const difference = average - target;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let ratingValue = 0;
   let ratingDescription = "";
   if (difference < -1) {
