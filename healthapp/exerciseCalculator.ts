@@ -20,24 +20,23 @@ interface Rating {
 
 const calculateRating = (average: number, target: number): Rating => {
   const difference = average - target;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let ratingValue = 0;
-  let ratingDescription = "";
-  if (difference < -1) {
-    ratingValue = 1;
-    ratingDescription = "Hey, don't give up!!";
-  } else if (difference >= -1 && difference < 1) {
-    ratingValue = 2;
-    ratingDescription = "Not too bad but could be better";
-  } else {
-    ratingValue = 3;
-    ratingDescription = "Great, keep going!!";
-  }
 
-  return {
-    ratingValue: ratingValue,
-    ratingDescription: ratingDescription,
-  };
+  if (difference < -1) {
+    return {
+      ratingValue: 1,
+      ratingDescription: "Hey, don't give up!!",
+    };
+  } else if (difference >= -1 && difference < 1) {
+    return {
+      ratingValue: 2,
+      ratingDescription: "Not too bad but could be better",
+    };
+  } else {
+    return {
+      ratingValue: 3,
+      ratingDescription: "Great, keep going!!",
+    };
+  }
 };
 
 const calculateExercises = (
