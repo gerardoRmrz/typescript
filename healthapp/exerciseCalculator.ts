@@ -13,11 +13,6 @@ interface Rating {
   ratingDescription: string;
 }
 
-/* interface InputVals {
-  value: number;
-  arrValues: number[];
-} */
-
 const calculateRating = (average: number, target: number): Rating => {
   const difference = average - target;
 
