@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import type { Diagnosis } from "./types.ts";
-import { data } from "../backend/data/diagnoses.ts";
+import diagnosesRouter from "./routers/diagnoses.ts";
 
 const app = express();
 app.use(express.json());
@@ -14,9 +13,7 @@ app.get("/api/ping", (_req, res) => {
   res.send("pong");
 });
 
-app.get("/api/diagnoses", (_req, res) => {
-  res.status(200).send(data);
-});
+app.use("/api/diagnoses", diagnosesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
