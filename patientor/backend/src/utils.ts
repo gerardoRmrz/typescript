@@ -1,27 +1,25 @@
-import type { NewPatientEntry, Gender } from "./types.ts";
+import { z } from "zod";
+import type { NewPatientEntry } from "./types.ts";
 import { Gender as GenderObj } from "./types.ts";
 
+/*
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
-
-const parseName = (name: unknown): string => {
-  if (!name || !isString(name)) {
-    throw new Error("Incorrect or missing name");
-  }
-  return name;
+ const parseName = (name: unknown): string => {
+  return z.string().parse(name);
 };
 
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
 
-const parseDate = (date: unknown): string => {
+ const parseDate = (date: unknown): string => {
   if (!date || !isString(date) || !isDate(date)) {
     throw new Error("Incorrect or missing date: " + date);
   }
   return date;
-};
+}; 
 
 const isGender = (param: string): param is Gender => {
   return (Object.values(GenderObj) as string[]).includes(param);
@@ -34,7 +32,7 @@ const parseGender = (gender: unknown): Gender => {
   return gender;
 };
 
-const parseOccupation = (occupation: unknown): string => {
+ const parseOccupation = (occupation: unknown): string => {
   if (!occupation || !isString(occupation)) {
     throw new Error("Incorrect or missing occupation: " + occupation);
   }
@@ -46,7 +44,7 @@ const parseSsn = (ssn: unknown): string => {
     throw new Error("Incorrect or missing occupation: " + ssn);
   }
   return ssn;
-};
+}; */
 
 const parseNewPatientEntry = (object: unknown): NewPatientEntry => {
   if (!object || typeof object !== "object") {
@@ -61,11 +59,11 @@ const parseNewPatientEntry = (object: unknown): NewPatientEntry => {
     "ssn" in object
   ) {
     const newEntry: NewPatientEntry = {
-      name: parseName(object.name),
-      dateOfBirth: parseDate(object.dateOfBirth),
-      gender: parseGender(object.gender),
-      occupation: parseOccupation(object.occupation),
-      ssn: parseSsn(object.ssn),
+      name: z.string().parse(object.name),
+      dateOfBirth: z.iso.date().parse(object.dateOfBirth),
+      gender: z.enum(GenderObj).parse(object.gender),
+      occupation: z.string().parse(object.occupation),
+      ssn: z.string().parse(object.ssn),
     };
     return newEntry;
   }
