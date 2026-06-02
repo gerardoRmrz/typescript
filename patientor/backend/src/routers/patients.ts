@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Router, type Response } from "express";
 import patientsServices from "../services/patientsServices.ts";
+import parseNewPatientEntry from "../utils.ts";
+
 import type { NonSensitivePatientEntry } from "../types.ts";
 
 const router: Router = Router();
@@ -10,14 +12,8 @@ router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
 });
 
 router.post("/", (req, res) => {
-  const { name, dateOfBirth, gender, occupation, ssn } = req.body;
-  const addedEntry = patientsServices.addPatient({
-    name,
-    dateOfBirth,
-    gender,
-    occupation,
-    ssn,
-  });
+  const newPatientEntry = parseNewPatientEntry(req.body);
+  const addedEntry = patientsServices.addPatient(newPatientEntry);
   res.json(addedEntry);
 });
 
