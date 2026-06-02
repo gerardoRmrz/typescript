@@ -1,0 +1,29 @@
+{
+  "type": "module",
+  "name": "patientor_app",
+  "version": "1.0.0",
+  "description": "a simple medical record applicationfor doctors who handle diagnoses and basic health information for patients",
+  "main": "index.ts",
+  "scripts": {
+    "tsc": "tsc",
+    "dev": "concurrently \"tsc && node --no-warnings --loader ts-node/esm --watch --experimental-transform-types index.ts\"",
+    "start": "node --experimental-transform-types --disable-warning=ExperimentalWarning index.ts",
+    "lint": "eslint ."
+  },
+  "author": "grr",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "concurrently": "^10.0.1",
+    "eslint": "^10.4.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
