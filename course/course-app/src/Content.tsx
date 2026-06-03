@@ -1,21 +1,15 @@
 import type React from "react";
-interface Content {
-  name: string;
-  exerciseCount: number;
-}
+import Part from "./Part.tsx";
+import { type CoursePart } from "./types.tsx";
+
 const Content = ({
   courseParts,
 }: {
-  courseParts: Content[];
+  courseParts: CoursePart[];
 }): React.JSX.Element => {
   return (
     <>
-      {courseParts.map((item, index) => (
-        <p key={index}>
-          {" "}
-          {item.name} {item.exerciseCount}{" "}
-        </p>
-      ))}
+      <Part courseParts={courseParts} />
     </>
   );
 };
