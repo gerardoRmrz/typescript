@@ -46,7 +46,7 @@ const parseSsn = (ssn: unknown): string => {
   return ssn;
 }; */
 
-const NewPatientSchema = z.object({
+export const NewPatientSchema = z.object({
   name: z.string(),
   dateOfBirth: z.iso.date(),
   gender: z.enum(GenderObj),
@@ -54,21 +54,6 @@ const NewPatientSchema = z.object({
   ssn: z.string(),
 });
 
-const parseNewPatientEntry = (object: unknown): NewPatientEntry => {
-  if (!object || typeof object !== "object") {
-    throw new Error("Incorrect or missing data");
-  }
-
-  if (
-    "name" in object &&
-    "dateOfBirth" in object &&
-    "gender" in object &&
-    "occupation" in object &&
-    "ssn" in object
-  ) {
-    return NewPatientSchema.parse(object);
-  }
-  throw new Error("Incorrect data: some fields are missing");
+export const parseNewPatientEntry = (object: unknown): NewPatientEntry => {
+  return NewPatientSchema.parse(object);
 };
-
-export default parseNewPatientEntry;
