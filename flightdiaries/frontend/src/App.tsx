@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { type DiaryEntry } from "./types.ts";
 import axios from "axios";
 
+import WeatherCards from "./components/WeatherCards.tsx";
+
 function App() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   useEffect(() => {
@@ -14,20 +16,7 @@ function App() {
       <header>
         <h1>Flight Diaries App</h1>
       </header>
-      <section>
-        {entries.map((entry) => (
-          <div key={entry.id} className="weather-card">
-            <h4>{entry.date}</h4>
-            <div className="weather-visibility">
-              <p>{entry.weather}</p>
-              <p>{entry.visibility}</p>
-            </div>
-            <div className="comment">
-              <p>{entry.comment}</p>
-            </div>
-          </div>
-        ))}
-      </section>
+      <WeatherCards entries={entries} />
     </>
   );
 }
