@@ -1,6 +1,10 @@
 import { type DiaryEntry } from "../types.ts";
 
-const WeatherCards = ({ entries }: { entries: DiaryEntry[] }) => {
+const WeatherCards = ({
+  entries,
+}: {
+  entries: DiaryEntry[];
+}): React.JSX.Element => {
   return (
     <>
       <section>
