@@ -171,3 +171,11 @@ button {
 #submit-button {
   margin-top: 20px;
 }
+
+#error-message {
+  font-size: x-large;
+  color: red;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 20px 0 20px 0;
+  width: 100%;
+}

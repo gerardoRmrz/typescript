@@ -8,8 +8,8 @@ const WeatherCards = ({
   return (
     <>
       <section>
-        {entries.map((entry: DiaryEntry) => (
-          <div key={entry.id} className="weather-card">
+        {entries.map((entry: DiaryEntry, index: number) => (
+          <div key={index} className="weather-card">
             <h4>{entry.date}</h4>
             <div className="weather-visibility">
               <p>{entry.weather}</p>

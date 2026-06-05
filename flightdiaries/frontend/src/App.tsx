@@ -8,6 +8,8 @@ import NewEntryForm from "./components/NewEntryForm.tsx";
 function App() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [formVisible, setFormVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [errorVisible, setErrorVisible] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get<DiaryEntry[]>("http://localhost:3000/api/diaries").then((res) => {
@@ -16,9 +18,9 @@ function App() {
   }, []);
 
   const toggleVisibility = () => {
-    setFormVisible(!formVisible);
+    setFormVisible((visibleStatus) => !visibleStatus);
   };
-
+  console.log("errorMessage: ", errorMessage);
   return (
     <>
       <header>
@@ -29,8 +31,15 @@ function App() {
           {!formVisible ? "add a new entry" : "Home"}
         </button>
       </nav>
+      {errorVisible ? <div id="error-message">{errorMessage}</div> : null}
       {formVisible ? (
-        <NewEntryForm entries={entries} setEntries={setEntries} />
+        <NewEntryForm
+          entries={entries}
+          setEntries={setEntries}
+          setErrorMessage={setErrorMessage}
+          setErrorVisible={setErrorVisible}
+          toggleVisibility={toggleVisibility}
+        />
       ) : (
         <WeatherCards entries={entries} />
       )}

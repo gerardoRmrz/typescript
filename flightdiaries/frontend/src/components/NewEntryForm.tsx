@@ -1,11 +1,18 @@
 import { useState } from "react";
 import { type DiaryEntry, type NewEntryFormType } from "../types";
+import axios from "axios";
 const NewEntryForm = ({
   entries,
   setEntries,
+  setErrorMessage,
+  setErrorVisible,
+  toggleVisibility,
 }: {
   entries: DiaryEntry[];
   setEntries: React.Dispatch<React.SetStateAction<DiaryEntry[]>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setErrorVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleVisibility: CallableFunction;
 }): React.JSX.Element => {
   const defaultNewEntry = {
     id: 0,
@@ -58,8 +65,33 @@ const NewEntryForm = ({
 
   const submitForm = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEntries(entries.concat({ ...newEntry, id: entries.length + 1 }));
-    setNewEntry(defaultNewEntry);
+    axios
+      .post("http://localhost:3000/api/diaries", newEntry)
+      .then((res) => {
+        console.log("sending data: ");
+        console.log(res.data);
+        setEntries(entries.concat({ ...newEntry, id: entries.length + 1 }));
+        setNewEntry(defaultNewEntry);
+        toggleVisibility();
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log("Error!!!", { error });
+          setErrorVisible(true);
+          setErrorMessage(
+            "Error: " +
+              error.response?.data.error[0].path[0] +
+              ". " +
+              error.response?.data.error[0].message,
+          );
+          setTimeout(() => {
+            setErrorMessage("");
+            setErrorVisible(false);
+          }, 10000);
+        } else {
+          console.log(error);
+        }
+      });
   };
 
   return (
