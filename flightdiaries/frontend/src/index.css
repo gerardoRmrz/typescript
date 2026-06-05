@@ -115,6 +115,7 @@ section {
   justify-content: space-evenly;
   height: 90%;
   width: 20%;
+  border-radius: 10px;
 }
 
 h4 {
@@ -148,17 +149,25 @@ p {
   display: flex;
   flex-direction: column;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  font-size: xx-large;
-  border-style: solid;
-  border-color: #aa3bff;
+  font-size: x-large;
   justify-content: space-between;
-  height: 95%;
+  height: 100%;
+}
+
+label {
+  color: antiquewhite;
 }
 
 input {
   font-size: xx-large;
+  border-radius: 10px;
 }
 
 button {
   font-size: xx-large;
+  border-radius: 10px;
+}
+
+#submit-button {
+  margin-top: 20px;
 }
