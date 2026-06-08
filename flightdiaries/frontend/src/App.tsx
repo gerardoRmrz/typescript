@@ -20,7 +20,6 @@ function App() {
   const toggleVisibility = () => {
     setFormVisible((visibleStatus) => !visibleStatus);
   };
-  console.log("errorMessage: ", errorMessage);
   return (
     <>
       <header>

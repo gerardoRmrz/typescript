@@ -44,17 +44,12 @@
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
 }
 
 #root {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -69,7 +64,7 @@ h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: #e5e4e7;
+  color: var(--text-h);
 }
 
 h1 {
@@ -96,45 +91,50 @@ header {
   justify-content: center;
 }
 
-section {
+#form-container {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
+#card-container {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: space-around;
-  height: 40vh;
-  padding: 0;
 }
 
 .weather-card {
   background-color: #1f2028;
   display: flex;
-  flex: 0 0 calc((100- (3 * 16px)) / 4);
+  flex: 0 0 calc((100- (3 * 16px)) / 4); /* fit 4 cards in a row */
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   height: 90%;
   width: 20%;
   border-radius: 10px;
+  color: var(--text-h);
 }
 
 h4 {
   margin-top: 0;
   height: 15%;
-  font-size: x-large;
+  font-size: clamp(1rem, 2.5vw, 3rem); /*Min size, dynamic scaling, max size*/
 }
 
-.weather-visibility {
+.weather-visibility-container {
   display: flex;
   justify-content: space-around;
-  font-size: xx-large;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   align-items: center;
   width: 100%;
   margin-top: -15%;
+  font-size: clamp(1rem, 2.5vw, 3rem);
 }
 
-.comment {
+.comment-container {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   width: 80%;
   height: 22%;
   display: flex;
@@ -143,6 +143,24 @@ h4 {
 
 p {
   text-align: justify;
+}
+
+#weather-p,
+#visibility-p {
+  font-size: clamp(
+    big,
+    2.5vw,
+    xx-large
+  ); /*Min size, dynamic scaling, max size*/
+  font-weight: bolder;
+}
+
+#comment-p {
+  font-size: clamp(
+    small,
+    medium,
+    large
+  ); /*Min size, dynamic scaling, max size*/
 }
 
 #newEntry-form {
@@ -154,13 +172,15 @@ p {
   height: 100%;
 }
 
-label {
-  color: antiquewhite;
+label,
+legend {
+  color: var(--text-h);
 }
 
 input {
   font-size: xx-large;
   border-radius: 10px;
+  margin: 3vh;
 }
 
 button {
@@ -178,4 +198,8 @@ button {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 20px 0 20px 0;
   width: 100%;
+}
+
+fieldset {
+  display: flex;
 }

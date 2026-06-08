@@ -14,7 +14,13 @@ export interface InputForm {
   id: string;
   name: string;
   value: string;
+  checked?: boolean;
   onChange: CallBackFunction;
 }
 
-export type NewEntryFormType = InputForm[];
+export interface Fieldset {
+  fieldset: string;
+  children: InputForm[];
+}
+
+export type NewEntryFormType = Fieldset[];
