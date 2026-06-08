@@ -52,6 +52,7 @@ export const NewPatientSchema = z.object({
   gender: z.enum(GenderObj),
   occupation: z.string(),
   ssn: z.string(),
+  entries: [],
 });
 
 export const parseNewPatientEntry = (object: unknown): NewPatientEntry => {

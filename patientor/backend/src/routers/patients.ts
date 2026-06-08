@@ -12,6 +12,16 @@ router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
   res.send(patientsServices.getNonsensitiveData());
 });
 
+router.get("/:id", (req, res: Response<NonSensitivePatientEntry[]>) => {
+  const patientId = req.params.id;
+  const patientsInfo = patientsServices.getNonsensitiveData();
+  const requestedPatient = patientsInfo.filter(
+    (patient) => patient.id === patientId,
+  );
+  console.log(`Patient requested: ${patientId}`);
+  res.send(requestedPatient);
+});
+
 router.post("/", (req, res) => {
   try {
     const newPatientEntry = parseNewPatientEntry(req.body);

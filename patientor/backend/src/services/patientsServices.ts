@@ -17,12 +17,13 @@ const getNonsensitiveData = (): NonSensitivePatientEntry[] => {
     dateOfBirth,
     gender,
     occupation,
+    entries: [],
   }));
 };
 
 const addPatient = (entry: NewPatientEntry): Patient => {
   const id = uuid();
-  const newPatient: Patient = { ...entry, id };
+  const newPatient: Patient = { ...entry, id, entries: [] };
   patients.push(newPatient);
   return newPatient;
 };
