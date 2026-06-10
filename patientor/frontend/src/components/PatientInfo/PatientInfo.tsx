@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { type Patient, type Gender, type Diagnoses } from "../../types";
+import { Patient, Gender, Diagnoses } from "../../types";
 import patientService from "../../services/patients";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
+
+import Entries from "../Entries.tsx";
 
 type RouteParams = {
   id: string;
@@ -35,13 +37,6 @@ const PatientInfo = ({ diagnoses }: Props) => {
     void fetchPatientById();
   }, [id]);
 
-  const filterDiagnosesByCode = (code: string) => {
-    const diagnoseDescription = diagnoses.filter(
-      (diagnose) => diagnose.code === code,
-    );
-    return diagnoseDescription[0].name;
-  };
-
   return (
     <>
       <h2>
@@ -52,23 +47,11 @@ const PatientInfo = ({ diagnoses }: Props) => {
       <p>occupation: {userInfo.occupation}</p>
       <p>date of birth: {userInfo.dateOfBirth}</p>
       <h3>Entries</h3>
-      <div>
-        {userInfo.entries?.map((entry) => (
-          <div key={entry.id}>
-            <strong>{entry.date}</strong> <span>{entry.description}</span>
-            {entry.diagnosisCodes ? (
-              <ul>
-                {entry.diagnosisCodes.map((code, index) => (
-                  <li key={index}>
-                    {" "}
-                    <strong>{code}</strong> {filterDiagnosesByCode(code)}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        ))}
-      </div>
+      {userInfo.entries ? (
+        <Entries entriesList={userInfo.entries} diagnoses={diagnoses} />
+      ) : (
+        <p>no entries</p>
+      )}
     </>
   );
 };
