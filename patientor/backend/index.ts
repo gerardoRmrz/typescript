@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
-import type { Diagnosis } from "./types.ts";
-import { data } from "../backend/data/diagnoses.ts";
+import data from "./data/diagnoses.ts";
 
 const app = express();
 app.use(express.json());
