@@ -16,6 +16,7 @@ const PatientInfo = () => {
     occupation: "",
     ssn: "",
     gender: "other" as Gender,
+    entries: [],
   };
 
   const [userInfo, setUserInfo] = useState<Patient>(initPatient);
@@ -28,7 +29,7 @@ const PatientInfo = () => {
     };
     void fetchPatientById();
   }, [id]);
-
+  console.log(userInfo);
   return (
     <>
       <h2>
@@ -38,6 +39,21 @@ const PatientInfo = () => {
       <p>ssn: {userInfo.ssn}</p>
       <p>occupation: {userInfo.occupation}</p>
       <p>date of birth: {userInfo.dateOfBirth}</p>
+      <h3>Entries</h3>
+      <div>
+        {userInfo.entries?.map((entry) => (
+          <div key={entry.id}>
+            <strong>{entry.date}</strong> <span>{entry.description}</span>
+            {entry.diagnosisCodes ? (
+              <ul>
+                {entry.diagnosisCodes.map((code, index) => (
+                  <li key={index}> {code} </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ))}
+      </div>
     </>
   );
 };
