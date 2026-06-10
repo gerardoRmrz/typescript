@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { type Patient, type Gender } from "../../types";
+import { type Patient, type Gender, type Diagnoses } from "../../types";
 import patientService from "../../services/patients";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
@@ -9,7 +9,11 @@ type RouteParams = {
   id: string;
 };
 
-const PatientInfo = () => {
+interface Props {
+  diagnoses: Diagnoses[];
+}
+
+const PatientInfo = ({ diagnoses }: Props) => {
   const initPatient: Patient = {
     id: "",
     name: "",
@@ -20,6 +24,7 @@ const PatientInfo = () => {
   };
 
   const [userInfo, setUserInfo] = useState<Patient>(initPatient);
+
   const { id } = useParams() as RouteParams;
 
   useEffect(() => {
@@ -29,7 +34,14 @@ const PatientInfo = () => {
     };
     void fetchPatientById();
   }, [id]);
-  console.log(userInfo);
+
+  const filterDiagnosesByCode = (code: string) => {
+    const diagnoseDescription = diagnoses.filter(
+      (diagnose) => diagnose.code === code,
+    );
+    return diagnoseDescription[0].name;
+  };
+
   return (
     <>
       <h2>
@@ -47,7 +59,10 @@ const PatientInfo = () => {
             {entry.diagnosisCodes ? (
               <ul>
                 {entry.diagnosisCodes.map((code, index) => (
-                  <li key={index}> {code} </li>
+                  <li key={index}>
+                    {" "}
+                    <strong>{code}</strong> {filterDiagnosesByCode(code)}
+                  </li>
                 ))}
               </ul>
             ) : null}
