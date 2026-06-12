@@ -1,50 +1,7 @@
 import { z } from "zod";
-import type { NewPatientEntry } from "./types.ts";
-import { Gender as GenderObj } from "./types.ts";
-
-/*
-const isString = (text: unknown): text is string => {
-  return typeof text === "string" || text instanceof String;
-};
- const parseName = (name: unknown): string => {
-  return z.string().parse(name);
-};
-
-const isDate = (date: string): boolean => {
-  return Boolean(Date.parse(date));
-};
-
- const parseDate = (date: unknown): string => {
-  if (!date || !isString(date) || !isDate(date)) {
-    throw new Error("Incorrect or missing date: " + date);
-  }
-  return date;
-}; 
-
-const isGender = (param: string): param is Gender => {
-  return (Object.values(GenderObj) as string[]).includes(param);
-};
-
-const parseGender = (gender: unknown): Gender => {
-  if (!gender || !isString(gender) || !isGender(gender)) {
-    throw new Error("Incorrect or missing gender: " + gender);
-  }
-  return gender;
-};
-
- const parseOccupation = (occupation: unknown): string => {
-  if (!occupation || !isString(occupation)) {
-    throw new Error("Incorrect or missing occupation: " + occupation);
-  }
-  return occupation;
-};
-
-const parseSsn = (ssn: unknown): string => {
-  if (!ssn || !isString(ssn)) {
-    throw new Error("Incorrect or missing occupation: " + ssn);
-  }
-  return ssn;
-}; */
+import type { NewPatientEntry, EntryWithoutId } from "./newTypes.ts";
+import { HealthCheckRating } from "./newTypes.ts";
+import { Gender as GenderObj } from "./newTypes.ts";
 
 export const NewPatientSchema = z.object({
   name: z.string(),
@@ -52,9 +9,58 @@ export const NewPatientSchema = z.object({
   gender: z.enum(GenderObj),
   occupation: z.string(),
   ssn: z.string(),
-  entries: [],
 });
 
-export const parseNewPatientEntry = (object: unknown): NewPatientEntry => {
+export const parseNewPatient = (object: unknown): NewPatientEntry => {
   return NewPatientSchema.parse(object);
+};
+
+const BaseEntrySchema = z.object({
+  date: z.string(),
+  specialist: z.string(),
+  diagnosisCodes: z.array(z.string()),
+  description: z.string(),
+});
+
+const SickLeave = z.object({
+  startDate: z.string(),
+  endDate: z.string(),
+});
+
+const Discharge = z.object({
+  date: z.string(),
+  criteria: z.string(),
+});
+
+const HealthCheckRatingSchema = z.union([
+  z.literal(HealthCheckRating.Healthy),
+  z.literal(HealthCheckRating.LowRisk),
+  z.literal(HealthCheckRating.HighRisk),
+  z.literal(HealthCheckRating.CriticalRisk),
+]);
+
+const OccupationalHealthCareSchema = BaseEntrySchema.extend({
+  type: z.literal("OccupationalHealthcare"),
+  employerName: z.string(),
+  SickLeave: SickLeave,
+});
+
+const HospitalSchema = BaseEntrySchema.extend({
+  type: z.literal("Hospital"),
+  discharge: Discharge,
+});
+
+const HealthCheckSchema = BaseEntrySchema.extend({
+  type: z.literal("HealthCheck"),
+  healthCheckRating: HealthCheckRatingSchema,
+});
+
+const EntrySchema = z.union([
+  OccupationalHealthCareSchema,
+  HospitalSchema,
+  HealthCheckSchema,
+]);
+
+export const parseNewEntry = (object: unknown): EntryWithoutId => {
+  return EntrySchema.parse(object);
 };

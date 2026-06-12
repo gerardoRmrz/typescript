@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import diagnosesRouter from "./routers/diagnoses.ts";
 import patientsRouter from "./routers/patients.ts";
+
 const app = express();
 app.use(express.json());
 app.use(cors());

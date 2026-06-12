@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { z } from "zod";
+
 import { Router, type Response } from "express";
 import patientsServices from "../services/patientsServices.ts";
-import { parseNewPatientEntry } from "../utils.ts";
+import { parseNewPatient, parseNewEntry } from "../utils.ts";
 
-import type { NonSensitivePatientEntry, Patient } from "../types.ts";
+import type { NonSensitivePatientEntry, Patient } from "../newTypes.ts";
 
 const router: Router = Router();
 
@@ -23,14 +23,33 @@ router.get("/:id", (req, res: Response<Patient[]>) => {
 
 router.post("/", (req, res) => {
   try {
-    const newPatientEntry = parseNewPatientEntry(req.body);
-    const addedEntry = patientsServices.addPatient(newPatientEntry);
-    res.json(addedEntry);
+    const newPatient = parseNewPatient(req.body);
+    const addedPatient = patientsServices.addPatient(newPatient);
+
+    res.json(addedPatient);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       res.status(400).send({ error: error.issues });
     } else {
-      res.status(400).send({ error: "unknown error" });
+      res.status(400).send({ error: `unknown error: ${error}` });
+    }
+  }
+});
+
+router.post("/:id/entries", (req, res) => {
+  try {
+    const newEntry = parseNewEntry(req.body);
+    const addedEntry = patientsServices.addEntryToPatientId(
+      req.params.id,
+      newEntry,
+    );
+
+    res.status(200).json(addedEntry);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      res.status(400).send({ error: error.issues });
+    } else {
+      res.status(400).send({ error: `unknown error: ${error}` });
     }
   }
 });

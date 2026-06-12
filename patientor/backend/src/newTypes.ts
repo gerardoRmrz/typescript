@@ -6,17 +6,11 @@ export const Gender = {
 
 export type Gender = (typeof Gender)[keyof typeof Gender];
 
-export type Diagnosis = {
-  code: string;
-  name: string;
-  latin?: string;
-};
-
 export interface Patient {
   id: string;
   name: string;
   dateOfBirth: string;
-  gender: string;
+  gender: Gender;
   occupation: string;
   ssn: string;
   entries?: Entry[];
@@ -25,6 +19,12 @@ export interface Patient {
 export type NonSensitivePatientEntry = Omit<Patient, "ssn" | "entries">;
 
 export type NewPatientEntry = Omit<Patient, "id" | "entries">;
+
+export type Diagnosis = {
+  code: string;
+  name: string;
+  latin?: string;
+};
 
 type SickLeave = {
   startDate: string;
@@ -36,7 +36,7 @@ type Discharge = {
   criteria: string;
 };
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   date: string;
   specialist: string;
@@ -44,18 +44,18 @@ interface BaseEntry {
   description: string;
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
   type: "OccupationalHealthcare";
   employerName: string;
   sickLeave?: SickLeave;
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   discharge: Discharge;
 }
 
-const HealthCheckRating = {
+export const HealthCheckRating = {
   Healthy: 0,
   LowRisk: 1,
   HighRisk: 2,
@@ -65,9 +65,15 @@ const HealthCheckRating = {
 type HealthCheckRating =
   (typeof HealthCheckRating)[keyof typeof HealthCheckRating];
 
-interface HealthCheck extends BaseEntry {
+export interface HealthCheck extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
 
 export type Entry = OccupationalHealthcareEntry | HospitalEntry | HealthCheck;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type EntryWithoutId = UnionOmit<Entry, "id">;
