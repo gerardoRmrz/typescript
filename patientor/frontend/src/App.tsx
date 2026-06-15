@@ -14,9 +14,24 @@ import PatientInfo from "./components/PatientInfo/PatientInfo";
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [diagnoses, setDiagnoses] = useState<Diagnoses[]>([]);
+  const [showEntryButton, setShowEntryButton] = useState(false);
+
+  //=================================================
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  //=================================================
+
   useEffect(() => {
     void axios.get<void>(`${apiBaseUrl}/ping`);
-
     const fetchPatientList = async () => {
       const patients = await patientService.getAll();
       setPatients(patients);
@@ -36,9 +51,20 @@ const App = () => {
           <Typography variant="h3" sx={{ marginBottom: "0.5em" }}>
             Patientor
           </Typography>
-          <Button component={Link} to="/" variant="contained" color="primary">
+          <Button
+            component={Link}
+            to="/"
+            variant="contained"
+            color="primary"
+            onClick={() => setShowEntryButton(false)}
+          >
             Home
-          </Button>
+          </Button>{" "}
+          {showEntryButton ? (
+            <Button color="primary" variant="contained" onClick={openModal}>
+              Add Entry
+            </Button>
+          ) : null}
           <Divider sx={{ marginY: 2 }} />
           <Routes>
             <Route
@@ -52,7 +78,16 @@ const App = () => {
             />
             <Route
               path="/patients/:id"
-              element={<PatientInfo diagnoses={diagnoses} />}
+              element={
+                <PatientInfo
+                  diagnoses={diagnoses}
+                  setShowEntryButton={setShowEntryButton}
+                  modalOpen={modalOpen}
+                  error={error}
+                  closeModal={closeModal}
+                  setModalOpen={setModalOpen}
+                />
+              }
             ></Route>
           </Routes>
         </Container>

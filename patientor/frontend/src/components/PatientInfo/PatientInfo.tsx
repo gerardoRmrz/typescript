@@ -1,11 +1,13 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Patient, Gender, Diagnoses } from "../../types";
+import { Patient, Gender, Diagnoses, EntryWithoutId } from "../../types";
 import patientService from "../../services/patients";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 
 import Entries from "../Entries.tsx";
+import AddEntryModal from "../AddEntryModal";
 
 type RouteParams = {
   id: string;
@@ -13,9 +15,21 @@ type RouteParams = {
 
 interface Props {
   diagnoses: Diagnoses[];
+  setShowEntryButton: React.Dispatch<React.SetStateAction<boolean>>;
+  modalOpen: boolean;
+  error: string | undefined;
+  closeModal: () => void;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PatientInfo = ({ diagnoses }: Props) => {
+const PatientInfo = ({
+  diagnoses,
+  setShowEntryButton,
+  modalOpen,
+  error,
+  closeModal,
+  setModalOpen,
+}: Props) => {
   const initPatient: Patient = {
     id: "",
     name: "",
@@ -29,13 +43,27 @@ const PatientInfo = ({ diagnoses }: Props) => {
 
   const { id } = useParams() as RouteParams;
 
+  const submitNewEntry = async (values: EntryWithoutId) => {
+    console.log(values);
+    try {
+      setModalOpen(false);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+      } else {
+        console.log("**", error);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchPatientById = async () => {
-      const patientById = await patientService.getById(id);
-      setUserInfo(patientById[0]);
+      const [patientById] = await patientService.getById(id);
+      setUserInfo(patientById);
     };
+    setShowEntryButton(true);
     void fetchPatientById();
-  }, [id]);
+  }, [id, setShowEntryButton]);
 
   return (
     <>
@@ -52,6 +80,12 @@ const PatientInfo = ({ diagnoses }: Props) => {
       ) : (
         <p>no entries</p>
       )}
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
     </>
   );
 };
