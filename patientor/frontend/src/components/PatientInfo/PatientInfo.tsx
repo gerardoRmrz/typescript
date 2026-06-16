@@ -15,6 +15,8 @@ type RouteParams = {
 
 interface Props {
   diagnoses: Diagnoses[];
+  patients: Patient[];
+  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
   setShowEntryButton: React.Dispatch<React.SetStateAction<boolean>>;
   modalOpen: boolean;
   error: string | undefined;
@@ -24,6 +26,8 @@ interface Props {
 
 const PatientInfo = ({
   diagnoses,
+  patients,
+  setPatients,
   setShowEntryButton,
   modalOpen,
   error,
@@ -44,7 +48,8 @@ const PatientInfo = ({
   const { id } = useParams() as RouteParams;
 
   const submitNewEntry = async (values: EntryWithoutId) => {
-    console.log(values);
+    const updatedPatientList = await patientService.addPatientEntry(values, id);
+    setPatients(updatedPatientList);
     try {
       setModalOpen(false);
     } catch (error: unknown) {
@@ -57,14 +62,14 @@ const PatientInfo = ({
   };
 
   useEffect(() => {
-    const fetchPatientById = async () => {
-      const [patientById] = await patientService.getById(id);
+    const fetchPatientById = () => {
+      const [patientById] = patients.filter((patient) => patient.id === id);
       setUserInfo(patientById);
     };
     setShowEntryButton(true);
     void fetchPatientById();
-  }, [id, setShowEntryButton]);
-
+  }, [id, setShowEntryButton, patients]);
+  console.log(userInfo, "<++++++++++++++++++");
   return (
     <>
       <h2>

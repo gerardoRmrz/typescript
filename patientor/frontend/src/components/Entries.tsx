@@ -13,10 +13,13 @@ type EntryType = "Hospital" | "OccupationalHealthcare" | "HealthCheck";
 
 const Entries = ({ entriesList, diagnoses }: Props) => {
   const filterDiagnosesByCode = (code: string) => {
-    const diagnoseDescription = diagnoses.filter(
+    const [diagnoseDescription] = diagnoses.filter(
       (diagnose) => diagnose.code === code,
     );
-    return diagnoseDescription[0].name;
+    if (!diagnoseDescription) {
+      return "No description";
+    }
+    return diagnoseDescription.name;
   };
 
   const assertNever = (value: never): never => {

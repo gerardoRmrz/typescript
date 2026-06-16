@@ -33,17 +33,19 @@ const App = () => {
   useEffect(() => {
     void axios.get<void>(`${apiBaseUrl}/ping`);
     const fetchPatientList = async () => {
-      const patients = await patientService.getAll();
-      setPatients(patients);
+      const patientsList = await patientService.getAll();
+      setPatients(patientsList);
     };
-    void fetchPatientList();
+
     const fetchDiagnosesData = async () => {
       const diagnosesAll = await diagnosesService.getAll();
       setDiagnoses(diagnosesAll);
     };
+
+    void fetchPatientList();
     void fetchDiagnosesData();
   }, []);
-
+  console.log(patients, "<***********");
   return (
     <div className="App">
       <Router>
@@ -81,6 +83,8 @@ const App = () => {
               element={
                 <PatientInfo
                   diagnoses={diagnoses}
+                  patients={patients}
+                  setPatients={setPatients}
                   setShowEntryButton={setShowEntryButton}
                   modalOpen={modalOpen}
                   error={error}
