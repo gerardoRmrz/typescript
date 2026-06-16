@@ -45,7 +45,7 @@ const App = () => {
     void fetchPatientList();
     void fetchDiagnosesData();
   }, []);
-  console.log(patients, "<***********");
+
   return (
     <div className="App">
       <Router>
@@ -87,6 +87,7 @@ const App = () => {
                   setPatients={setPatients}
                   setShowEntryButton={setShowEntryButton}
                   modalOpen={modalOpen}
+                  setError={setError}
                   error={error}
                   closeModal={closeModal}
                   setModalOpen={setModalOpen}

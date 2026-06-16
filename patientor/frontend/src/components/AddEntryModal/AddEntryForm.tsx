@@ -26,11 +26,13 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [dischargeCriteria, setDischargeCriteria] = useState("");
 
   const addEntry = (event: SyntheticEvent) => {
+    console.log(diagnosisCodes.length, "<****************");
     event.preventDefault();
     onSubmit({
       date,
       specialist,
-      diagnosisCodes: diagnosisCodes.split(", "),
+      diagnosisCodes:
+        diagnosisCodes.length > 0 ? diagnosisCodes.split(", ") : [],
       description,
       type: "Hospital",
       discharge: {

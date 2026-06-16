@@ -4,12 +4,12 @@ import { Router, type Response } from "express";
 import patientsServices from "../services/patientsServices.ts";
 import { parseNewPatient, parseNewEntry } from "../utils.ts";
 
-import type { NonSensitivePatientEntry, Patient } from "../newTypes.ts";
+import type { Patient } from "../newTypes.ts";
 
 const router: Router = Router();
 
-router.get("/", (_req, res: Response<NonSensitivePatientEntry[]>) => {
-  res.send(patientsServices.getNonsensitiveData());
+router.get("/", (_req, res: Response<Patient[]>) => {
+  res.send(patientsServices.getData());
 });
 
 router.get("/:id", (req, res: Response<Patient[]>) => {

@@ -5,7 +5,6 @@ import { apiBaseUrl } from "../constants";
 
 const getAll = async () => {
   const { data } = await axios.get<Patient[]>(`${apiBaseUrl}/patients`);
-  console.log("&&&&&&&", data, "&&&&&&&");
   return data;
 };
 
@@ -21,7 +20,6 @@ const config = {
 };
 
 const create = async (object: PatientFormValues) => {
-  console.log(object);
   const { data } = await axios.post<Patient>(
     `${apiBaseUrl}/patients`,
     object,

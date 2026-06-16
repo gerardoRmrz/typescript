@@ -53,6 +53,7 @@ const addEntryToPatientId = (
 ): Patient[] => {
   const currentPatient = getPatientByID(patientId);
   const entries = currentPatient?.entries;
+
   if (entries) {
     const updatedEntries = entries.concat({ ...newEntry, id: uuid() });
     const updatedPatient = {

@@ -17,9 +17,9 @@ const Entries = ({ entriesList, diagnoses }: Props) => {
       (diagnose) => diagnose.code === code,
     );
     if (!diagnoseDescription) {
-      return "No description";
+      return;
     }
-    return diagnoseDescription.name;
+    return diagnoseDescription?.name;
   };
 
   const assertNever = (value: never): never => {

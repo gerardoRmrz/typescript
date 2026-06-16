@@ -20,6 +20,7 @@ interface Props {
   setShowEntryButton: React.Dispatch<React.SetStateAction<boolean>>;
   modalOpen: boolean;
   error: string | undefined;
+  setError: React.Dispatch<React.SetStateAction<string | undefined>>;
   closeModal: () => void;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -30,6 +31,7 @@ const PatientInfo = ({
   setPatients,
   setShowEntryButton,
   modalOpen,
+  setError,
   error,
   closeModal,
   setModalOpen,
@@ -47,16 +49,47 @@ const PatientInfo = ({
 
   const { id } = useParams() as RouteParams;
 
+  const validateDiagnosisCodes = (diagnosisCodeInput: string[]): boolean => {
+    const diagnosesCodes = diagnoses.map((diag) => diag.code);
+    const isInputValid = diagnosisCodeInput
+      .map((input) => diagnosesCodes.includes(input))
+      .every((item) => !!item);
+
+    if (!isInputValid) {
+      setError("Invalid diagnoses codes");
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+      throw new Error("The diagnoses codes are not valid");
+    }
+
+    return isInputValid;
+  };
+
   const submitNewEntry = async (values: EntryWithoutId) => {
-    const updatedPatientList = await patientService.addPatientEntry(values, id);
-    setPatients(updatedPatientList);
+    console.log(values?.diagnosisCodes, values?.diagnosisCodes?.length);
     try {
+      if (values.diagnosisCodes && values.diagnosisCodes?.length > 0) {
+        validateDiagnosisCodes(values.diagnosisCodes);
+      }
+      const updatedPatientList = await patientService.addPatientEntry(
+        values,
+        id,
+      );
+      setPatients(updatedPatientList);
       setModalOpen(false);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.log(error);
+        setError(error.message);
+        setTimeout(() => {
+          setError("");
+        }, 3000);
       } else {
-        console.log("**", error);
+        setError("Something wrong happened");
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+        console.log(error);
       }
     }
   };
@@ -69,7 +102,6 @@ const PatientInfo = ({
     setShowEntryButton(true);
     void fetchPatientById();
   }, [id, setShowEntryButton, patients]);
-  console.log(userInfo, "<++++++++++++++++++");
   return (
     <>
       <h2>
