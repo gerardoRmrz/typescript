@@ -1,14 +1,16 @@
 import { useState, SyntheticEvent } from "react";
 
-import {
+/* import {
   TextField,
   InputLabel,
-  /*   MenuItem,
-  Select, */
+  MenuItem,
+  Select,
   Grid,
   Button,
   //SelectChangeEvent,
-} from "@mui/material";
+} from "@mui/material"; */
+
+import HospitalForm from "./HospitalForm";
 
 import { EntryWithoutId } from "../../types";
 
@@ -44,62 +46,22 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
 
   return (
     <>
-      <form onSubmit={addEntry}>
-        <TextField
-          label="Date"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
-        />
-        <TextField
-          label="specialist"
-          fullWidth
-          value={specialist}
-          onChange={({ target }) => setSpecialist(target.value)}
-        />
-        <TextField
-          label="diagnosisCodes"
-          fullWidth
-          value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value)}
-        />
-        <TextField
-          label="description"
-          fullWidth
-          value={description}
-          onChange={({ target }) => setDescription(target.value)}
-        />
-        <InputLabel sx={{ marginTop: 2.5 }}>Discharge</InputLabel>
-        <TextField
-          label="dischargeDate"
-          fullWidth
-          value={dischargeDate}
-          onChange={({ target }) => setDischargeDate(target.value)}
-        />
-        <TextField
-          label="dischargeCriteria"
-          fullWidth
-          value={dischargeCriteria}
-          onChange={({ target }) => setDischargeCriteria(target.value)}
-        />
-        <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
-          <Grid size="auto">
-            <Button
-              color="secondary"
-              variant="contained"
-              type="button"
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          </Grid>
-          <Grid size="auto">
-            <Button type="submit" variant="contained">
-              Add
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <HospitalForm
+        addEntry={addEntry}
+        date={date}
+        setDate={setDate}
+        specialist={specialist}
+        setSpecialist={setSpecialist}
+        diagnosisCodes={diagnosisCodes}
+        setDiagnosisCodes={setDiagnosisCodes}
+        description={description}
+        setDescription={setDescription}
+        dischargeDate={dischargeDate}
+        setDischargeDate={setDischargeDate}
+        dischargeCriteria={dischargeCriteria}
+        setDischargeCriteria={setDischargeCriteria}
+        onCancel={onCancel}
+      />
     </>
   );
 };
