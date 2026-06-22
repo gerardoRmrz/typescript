@@ -17,7 +17,12 @@ interface Props {
 }
 
 const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
-  <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
+  <Dialog
+    fullWidth={true}
+    open={modalOpen}
+    onClose={() => onClose()}
+    disableRestoreFocus={false}
+  >
     <DialogTitle>Add a new entry</DialogTitle>
     <Divider />
     <DialogContent>

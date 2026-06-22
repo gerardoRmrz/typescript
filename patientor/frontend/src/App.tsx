@@ -24,6 +24,9 @@ const App = () => {
   const openModal = (): void => setModalOpen(true);
 
   const closeModal = (): void => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     setModalOpen(false);
     setError(undefined);
   };
