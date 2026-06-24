@@ -21,10 +21,17 @@ const HospitalForm = ({
     <>
       <InputLabel sx={{ marginTop: 2.5 }}>Discharge</InputLabel>
       <TextField
+        type="date"
         label="dischargeDate"
         fullWidth
         value={dischargeDate}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+        }}
         onChange={({ target }) => setDischargeDate(target.value)}
+        sx={{ marginTop: 1 }}
       />
       <TextField
         label="dischargeCriteria"

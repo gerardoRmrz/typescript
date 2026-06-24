@@ -29,17 +29,30 @@ const OccupationalHCForm = ({
         value={employerName}
         onChange={({ target }) => setEmployerName(target.value)}
       />
-      <InputLabel sx={{ marginTop: 2.5 }}>Sick Leave</InputLabel>
+      <InputLabel sx={{ margin: 1 }}>Sick Leave</InputLabel>
       <TextField
-        label="startDate"
+        label="start date"
+        type="date"
         fullWidth
         value={startDate}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+        }}
         onChange={({ target }) => setStartDate(target.value)}
       />
       <TextField
-        label="endDate"
+        sx={{ marginTop: 1 }}
+        label="end date"
+        type="date"
         fullWidth
         value={endDate}
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+        }}
         onChange={({ target }) => setEndDate(target.value)}
       />
     </>

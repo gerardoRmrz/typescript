@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   InputLabel,
+  Typography,
 } from "@mui/material";
 /* import {
   TextField,
@@ -25,14 +26,15 @@ import HealthCheckForm from "./HealthCheckForm";
 
 import OccupationalHCForm from "./OccupationalHCForm";
 
-import { EntryWithoutId } from "../../types";
+import { EntryWithoutId, Diagnoses } from "../../types";
 
 interface Props {
+  diagnosisCodesList: Diagnoses[];
   onCancel: () => void;
   onSubmit: (values: EntryWithoutId) => void;
 }
 
-const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
+const AddEntryForm = ({ diagnosisCodesList, onCancel, onSubmit }: Props) => {
   const HealthCheckRating = {
     Healthy: 0,
     LowRisk: 1,
@@ -46,7 +48,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
   const [entryType, setEntryType] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [specialist, setSpecialist] = useState("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState<string>("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
   const [healthCode, setHealthCode] = useState<number>(0);
   const [dischargeDate, setDischargeDate] = useState<string>("");
@@ -63,8 +65,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         onSubmit({
           date,
           specialist,
-          diagnosisCodes:
-            diagnosisCodes.length > 0 ? diagnosisCodes.split(", ") : [],
+          diagnosisCodes: diagnosisCodes,
           description,
           type: entryType,
           discharge: {
@@ -77,12 +78,11 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         onSubmit({
           date,
           specialist,
-          diagnosisCodes:
-            diagnosisCodes.length > 0 ? diagnosisCodes.split(", ") : [],
+          diagnosisCodes: diagnosisCodes,
           description,
           type: entryType,
           employerName: employerName,
-          sickLeave: {
+          SickLeave: {
             startDate: startDate,
             endDate: endDate,
           },
@@ -92,8 +92,7 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
         onSubmit({
           date,
           specialist,
-          diagnosisCodes:
-            diagnosisCodes.length > 0 ? diagnosisCodes.split(", ") : [],
+          diagnosisCodes: diagnosisCodes,
           description,
           type: entryType,
           healthCheckRating: healthCode as HealthCheckRating,
@@ -146,12 +145,26 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
 
   return (
     <>
-      <InputLabel sx={{ marginTop: 2.5 }}>Entry Type</InputLabel>
+      <InputLabel shrink id="entry-type">
+        Entry Type
+      </InputLabel>
       <Select
-        label="Entry"
+        labelId="entry-type"
+        id="entry-select"
+        notched={true}
         fullWidth
         value={entryType}
         onChange={handleEntryType}
+        displayEmpty
+        renderValue={(selected) => {
+          if (!selected) {
+            return (
+              <Typography color="textSecondary">Select an option...</Typography>
+            );
+          }
+          return selected;
+        }}
+        sx={{ marginBottom: 1 }}
       >
         <MenuItem key="hospital" value="Hospital">
           Hospital
@@ -165,10 +178,12 @@ const AddEntryForm = ({ onCancel, onSubmit }: Props) => {
       </Select>
       <form onSubmit={addEntry}>
         <BaseEntryForm
+          entryType={entryType}
           date={date}
           setDate={setDate}
           specialist={specialist}
           setSpecialist={setSpecialist}
+          diagnosisCodesList={diagnosisCodesList}
           diagnosisCodes={diagnosisCodes}
           setDiagnosisCodes={setDiagnosisCodes}
           description={description}

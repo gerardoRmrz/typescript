@@ -49,8 +49,12 @@ const PatientInfo = ({
 
   const { id } = useParams() as RouteParams;
 
+  const getDiagnosisCodes = () => {
+    return diagnoses.map((diag) => diag.code);
+  };
+
   const validateDiagnosisCodes = (diagnosisCodeInput: string[]): boolean => {
-    const diagnosesCodes = diagnoses.map((diag) => diag.code);
+    const diagnosesCodes = getDiagnosisCodes();
     const isInputValid = diagnosisCodeInput
       .map((input) => diagnosesCodes.includes(input))
       .every((item) => !!item);
@@ -118,6 +122,7 @@ const PatientInfo = ({
         <p>no entries</p>
       )}
       <AddEntryModal
+        diagnosisCodes={diagnoses}
         modalOpen={modalOpen}
         onSubmit={submitNewEntry}
         error={error}
