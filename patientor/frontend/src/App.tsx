@@ -67,7 +67,7 @@ const App = () => {
           </Button>{" "}
           {showEntryButton ? (
             <Button color="primary" variant="contained" onClick={openModal}>
-              Add Entry
+              Add New Entry
             </Button>
           ) : null}
           <Divider sx={{ marginY: 2 }} />

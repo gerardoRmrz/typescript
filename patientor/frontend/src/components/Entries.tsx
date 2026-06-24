@@ -100,6 +100,11 @@ const Entries = ({ entriesList, diagnoses }: Props) => {
             </ul>
           ) : null}
           <p>diagnose by {entry.specialist}</p>
+          {entry.type === "Hospital" ? (
+            <p>
+              {entry.discharge.date} {entry.discharge.criteria}
+            </p>
+          ) : null}
         </div>
       ))}
     </div>

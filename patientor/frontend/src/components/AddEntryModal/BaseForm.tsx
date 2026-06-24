@@ -41,7 +41,7 @@ const BaseEntryForm = ({
     <>
       <TextField
         type="date"
-        label="Date"
+        label="entry-date"
         fullWidth
         value={date}
         slotProps={{

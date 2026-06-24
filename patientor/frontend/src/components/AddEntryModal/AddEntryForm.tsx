@@ -45,7 +45,7 @@ const AddEntryForm = ({ diagnosisCodesList, onCancel, onSubmit }: Props) => {
   type HealthCheckRating =
     (typeof HealthCheckRating)[keyof typeof HealthCheckRating];
 
-  const [entryType, setEntryType] = useState<string>("");
+  const [entryType, setEntryType] = useState<string>("Hospital");
   const [date, setDate] = useState<string>("");
   const [specialist, setSpecialist] = useState("");
   const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
@@ -201,13 +201,11 @@ const AddEntryForm = ({ diagnosisCodesList, onCancel, onSubmit }: Props) => {
               Cancel
             </Button>
           </Grid>
-          {entryType ? (
-            <Grid size="auto">
-              <Button type="submit" variant="contained">
-                Add
-              </Button>
-            </Grid>
-          ) : null}
+          <Grid size="auto">
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </>
